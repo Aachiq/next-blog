@@ -90,11 +90,18 @@ function Header() {
               onClose={handleCloseNavMenu}
               sx={{ display: { xs: "block", md: "none" } }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem href="/">
+                <Typography sx={{ textAlign: "center" }}>Home</Typography>
+              </MenuItem>
+              <MenuItem href="/about">
+                <Typography sx={{ textAlign: "center" }}>About</Typography>
+              </MenuItem>
+              <MenuItem href="/contact">
+                <Typography sx={{ textAlign: "center" }}>Contact</Typography>
+              </MenuItem>
+              <MenuItem href="/blog">
+                <Typography sx={{ textAlign: "center" }}>Blog</Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -117,15 +124,32 @@ function Header() {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
+            <Button
+              href="/"
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Home
+            </Button>
+            <Button
+              href="/about"
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              About
+            </Button>
+            <Button
+              href="/contact"
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Contact
+            </Button>
+            <Button
+              href="/blog"
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Blog
+            </Button>
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
