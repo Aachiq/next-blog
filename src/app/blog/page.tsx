@@ -1,19 +1,36 @@
 "use client";
 
-import { addFavorite } from "@/redux/favoriteSlice";
+import { addFavorite, Post } from "@/redux/favoriteSlice";
+import Image from "next/image";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 const dummyPosts = [
-  { id: 1, title: "First Post", content: "This is the first post." },
-  { id: 2, title: "Second Post", content: "This is the second post." },
+  {
+    id: 1,
+    title: "First Post",
+    content: "This is the first post.",
+    image: "post1.png",
+  },
+  {
+    id: 2,
+    title: "Second Post",
+    content: "This is the second post.",
+    image: "post2.png",
+  },
+  {
+    id: 2,
+    title: "Second Post",
+    content: "This is the third post.",
+    image: "post3.png",
+  },
 ];
 
 export default function BlogPage() {
-  const [posts] = useState(dummyPosts);
+  const [posts] = useState<Post[]>(dummyPosts);
   const dispatch = useDispatch();
 
-  const handleFavorite = (post: any) => {
+  const handleFavorite = (post: Post) => {
     dispatch(addFavorite(post));
   };
 
@@ -27,6 +44,12 @@ export default function BlogPage() {
         >
           <h3>{post.title}</h3>
           <p>{post.content}</p>
+          <Image
+            alt="post_img"
+            width={150}
+            height={150}
+            src={`/images/posts/${post.image}`}
+          />
           <button onClick={() => handleFavorite(post)}>Add to Favorites</button>
         </div>
       ))}

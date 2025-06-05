@@ -16,6 +16,11 @@ const initialState: FavoritesState = {
   favorites: [],
 };
 
+export interface AppState {
+  // here add slices with thier types, it's same as RootState of redux does.
+  favoriteSlice: FavoritesState;
+}
+
 const favoritesSlice = createSlice({
   name: "favorites",
   initialState,
