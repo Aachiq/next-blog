@@ -58,7 +58,7 @@ export default function SignupPage() {
           textAlign="center"
           mb={2}
         >
-          CONNEXTION
+          CREATE ACCOUNT
         </Typography>
         <TextField
           fullWidth

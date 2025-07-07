@@ -13,11 +13,13 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
+import { useRouter } from "next/navigation"; // for modern routing /app # while nex/rouetr for old approch "/pages"
 
 const pages = ["Home", "About", "Contact", "Blog", "Favorites"];
 const settings = ["Register", "Login", "Logout"];
 
 function Header() {
+  const router = useRouter();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -40,6 +42,17 @@ function Header() {
     setAnchorElUser(null);
   };
 
+  const handleUserMenuClick = (setting: string) => {
+    console.log("setting :", setting);
+    if (setting === "Register") {
+      router.push("/auth/signup");
+    } else if (setting === "Login") {
+      router.push("/auth/signin");
+    } else if (setting === "Logout") {
+      // Optional: Add logout logic here
+      console.log("Logging out...");
+    }
+  };
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -184,9 +197,12 @@ function Header() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: "center" }}>
+                  <a
+                    style={{ textAlign: "center" }}
+                    onClick={() => handleUserMenuClick(setting)}
+                  >
                     {setting}
-                  </Typography>
+                  </a>
                 </MenuItem>
               ))}
             </Menu>

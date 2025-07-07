@@ -60,7 +60,7 @@ export default function SigninPage() {
           textAlign="center"
           mb={2}
         >
-          CREATE ACCOUNT
+          CONNEXION
         </Typography>
         <TextField
           fullWidth
