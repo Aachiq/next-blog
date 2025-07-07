@@ -1,6 +1,6 @@
 "use client"; // use this when working with state
 
-import { Box, TextField, Button } from "@mui/material";
+import { Box, TextField, Button, Alert } from "@mui/material";
 import React, { useState } from "react";
 import { Typography } from "@mui/material";
 import {
@@ -14,7 +14,9 @@ export default function Contact() {
     email: "",
     phone: "",
     message: "",
+    nationality: "Morocco",
   });
+  const [contactSuccessMsg, setContactSuccessMsg] = useState<string>("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -30,9 +32,21 @@ export default function Contact() {
     e.preventDefault();
     try {
       const result = await sendContactMessageService(contactInfo);
-      console.error("result:", result);
-      if (result?.code === 1) {
-        // show message of success "message sent"
+      console.log("result:", result);
+      // if (result?.code === 1) {
+      //   // show message of success "message sent"
+      //   console.log("result :", result);
+      // }
+      if (result) {
+        setContactInfo({
+          fullname: "",
+          email: "",
+          phone: "",
+          message: "",
+          nationality: "Morocco",
+        });
+        setContactSuccessMsg("Your message sent successfully !");
+        setTimeout(() => setContactSuccessMsg(""), 3000); // clear after 3s
       }
     } catch (err) {
       console.error("Error:", err);
@@ -62,7 +76,7 @@ export default function Contact() {
           fullWidth
           label="Full Name"
           id="fullname"
-          value={contactInfo.fullname}
+          value={contactInfo?.fullname}
           onChange={handleChange}
         />
         <TextField
@@ -70,25 +84,30 @@ export default function Contact() {
           label="Email"
           id="email"
           type="email"
-          value={contactInfo.email}
+          value={contactInfo?.email}
           onChange={handleChange}
         />
         <TextField
           fullWidth
           label="Phone"
           id="phone"
-          value={contactInfo.phone}
+          value={contactInfo?.phone}
           onChange={handleChange}
         />
         <TextField
           fullWidth
           label="Message"
           id="message"
-          value={contactInfo.message}
+          value={contactInfo?.message}
           onChange={handleChange}
           multiline
           rows={4}
         />
+        {contactSuccessMsg && (
+          <Alert severity="success" sx={{ mt: 2 }}>
+            {contactSuccessMsg}
+          </Alert>
+        )}
         <Button
           type="submit"
           variant="contained"

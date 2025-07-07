@@ -14,7 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
 
-const pages = ["Home", "About", "Contact", "Blog"];
+const pages = ["Home", "About", "Contact", "Blog", "Favorites"];
 const settings = ["Register", "Login", "Logout"];
 
 function Header() {
@@ -102,6 +102,9 @@ function Header() {
               <MenuItem href="/blog">
                 <Typography sx={{ textAlign: "center" }}>Blog</Typography>
               </MenuItem>
+              <MenuItem href="/favorite">
+                <Typography sx={{ textAlign: "center" }}>Favorites</Typography>
+              </MenuItem>
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
@@ -149,6 +152,12 @@ function Header() {
               sx={{ my: 2, color: "white", display: "block" }}
             >
               Blog
+            </Button>
+            <Button
+              href="/favorite"
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Favorites
             </Button>
           </Box>
           <Box sx={{ flexGrow: 0 }}>

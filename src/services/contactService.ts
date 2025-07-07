@@ -5,9 +5,11 @@ export interface IContactInfo {
   email: string;
   phone: string;
   message: string;
+  nationality: string;
 }
 export const sendContactMessageService = async (data: IContactInfo) => {
-  const response = await fetch(`${API_URL}/contact-send`, {
+  console.log("data :", data);
+  const response = await fetch(`${API_URL}/contact`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
