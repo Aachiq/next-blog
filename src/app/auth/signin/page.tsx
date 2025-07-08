@@ -6,7 +6,6 @@ import { Typography } from "@mui/material";
 import { ILoginPayload } from "../auth.types";
 import { userLoginService } from "@/services/authService";
 import { useRouter } from "next/navigation";
-import { console } from "inspector";
 
 export default function SigninPage() {
   const [userLogin, setUserLogin] = useState<ILoginPayload>({
@@ -29,9 +28,7 @@ export default function SigninPage() {
     e.preventDefault();
     try {
       const result = await userLoginService(userLogin);
-      console.log("result 1:", result);
       if (result) {
-        console.log("hello result");
         setUserLogin({
           email: "",
           password: "",
@@ -39,13 +36,11 @@ export default function SigninPage() {
         setLoginSuccessMsg("User Connected Successfully !");
         setTimeout(() => setLoginSuccessMsg(""), 5000); // clear after 3s
 
-        // Store user infos excluding (token)
-        console.log("Returned result from backend :", result);
-
+        // Store user infos excluding (token) in localstorage
         localStorage.setItem("userInfos", JSON.stringify(result));
 
         // redirect to home page
-        // router.push("/");
+        router.push("/");
       }
     } catch (err) {
       console.error("Error:", err);

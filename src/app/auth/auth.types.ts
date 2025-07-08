@@ -10,6 +10,7 @@ export interface ILoginPayload {
 }
 
 export interface ILoginResponse {
+  id: string;
   email: string;
   password: string;
 }
