@@ -3,22 +3,23 @@
 import { Box, TextField, Button, Alert } from "@mui/material";
 import React, { useState } from "react";
 import { Typography } from "@mui/material";
-import { IRegisterInfos } from "../auth.types";
-import { userRegisterService } from "@/services/authService";
+import { ILoginPayload } from "../auth.types";
+import { userLoginService } from "@/services/authService";
+import { useRouter } from "next/navigation";
+import { console } from "inspector";
 
 export default function SigninPage() {
-  const [userRegister, setUserRegister] = useState<IRegisterInfos>({
-    name: "",
+  const [userLogin, setUserLogin] = useState<ILoginPayload>({
     email: "",
     password: "",
   });
   const [loginSuccessMsg, setLoginSuccessMsg] = useState<string>("");
-
+  const router = useRouter();
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setUserRegister((prev) => ({
+    setUserLogin((prev) => ({
       ...prev,
       [id]: value,
     }));
@@ -27,16 +28,24 @@ export default function SigninPage() {
   const handleSubmitSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const result = await userRegisterService(userRegister);
-      console.log("result:", result);
+      const result = await userLoginService(userLogin);
+      console.log("result 1:", result);
       if (result) {
-        setUserRegister({
-          name: "",
+        console.log("hello result");
+        setUserLogin({
           email: "",
           password: "",
         });
         setLoginSuccessMsg("User Connected Successfully !");
         setTimeout(() => setLoginSuccessMsg(""), 5000); // clear after 3s
+
+        // Store user infos excluding (token)
+        console.log("Returned result from backend :", result);
+
+        localStorage.setItem("userInfos", JSON.stringify(result));
+
+        // redirect to home page
+        // router.push("/");
       }
     } catch (err) {
       console.error("Error:", err);
@@ -64,24 +73,18 @@ export default function SigninPage() {
         </Typography>
         <TextField
           fullWidth
-          label="Full Name"
-          id="fullname"
-          value={userRegister?.name}
-          onChange={handleChange}
-        />
-        <TextField
-          fullWidth
           label="Email"
           id="email"
           type="email"
-          value={userRegister?.email}
+          value={userLogin?.email}
           onChange={handleChange}
         />
         <TextField
           fullWidth
-          label="Phone"
-          id="phone"
-          value={userRegister?.password}
+          label="Password"
+          id="password"
+          type="password"
+          value={userLogin?.password}
           onChange={handleChange}
         />
 
@@ -96,7 +99,7 @@ export default function SigninPage() {
           color="primary"
           sx={{ mt: 2 }}
         >
-          SignUp
+          SignIn
         </Button>
       </Box>
       <Box>

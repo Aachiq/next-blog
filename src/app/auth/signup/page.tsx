@@ -3,21 +3,26 @@
 import { Box, TextField, Button, Alert } from "@mui/material";
 import React, { useState } from "react";
 import { Typography } from "@mui/material";
-import { ILoginInfos } from "../auth.types";
-import { userLoginService } from "@/services/authService";
+import { IRegisterInfos } from "../auth.types";
+import { userRegisterService } from "@/services/authService";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
-  const [userLogin, setUserLogin] = useState<ILoginInfos>({
+  const [userRegister, setUserRegister] = useState<IRegisterInfos>({
+    name: "",
     email: "",
     password: "",
   });
-  const [loginSuccessMsg, setLoginSuccessMsg] = useState<string>("");
+  const [registerSuccessMsg, setRegisterSuccessMsg] = useState<string>("");
+
+  // user router
+  const router = useRouter();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { id, value } = e.target;
-    setUserLogin((prev) => ({
+    setUserRegister((prev) => ({
       ...prev,
       [id]: value,
     }));
@@ -26,15 +31,16 @@ export default function SignupPage() {
   const handleSubmitSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const result = await userLoginService(userLogin);
-      console.log("result:", result);
+      const result = await userRegisterService(userRegister);
       if (result) {
-        setUserLogin({
+        setUserRegister({
+          name: "",
           email: "",
           password: "",
         });
-        setLoginSuccessMsg("Account Created Successfully !");
-        setTimeout(() => setLoginSuccessMsg(""), 5000); // clear after 3s
+        setRegisterSuccessMsg("Account Created Successfully !");
+        // redirect to signin
+        router.push("/auth/signin");
       }
     } catch (err) {
       console.error("Error:", err);
@@ -62,23 +68,31 @@ export default function SignupPage() {
         </Typography>
         <TextField
           fullWidth
-          label="Email"
-          id="email"
-          type="email"
-          value={userLogin?.email}
+          label="Full Name"
+          id="name"
+          value={userRegister?.name}
           onChange={handleChange}
         />
         <TextField
           fullWidth
-          label="Phone"
-          id="phone"
-          value={userLogin?.password}
+          label="Email"
+          id="email"
+          type="email"
+          value={userRegister?.email}
+          onChange={handleChange}
+        />
+        <TextField
+          fullWidth
+          label="Password"
+          type="password"
+          id="password"
+          value={userRegister?.password}
           onChange={handleChange}
         />
 
-        {loginSuccessMsg && (
+        {registerSuccessMsg && (
           <Alert severity="success" sx={{ mt: 2 }}>
-            {loginSuccessMsg}
+            {registerSuccessMsg}
           </Alert>
         )}
         <Button
@@ -87,7 +101,7 @@ export default function SignupPage() {
           color="primary"
           sx={{ mt: 2 }}
         >
-          SignIn
+          SignUp
         </Button>
       </Box>
       <Box>
