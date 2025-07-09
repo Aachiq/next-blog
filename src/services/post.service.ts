@@ -7,6 +7,13 @@ export interface ICreatePostPayload {
   category: number;
 }
 
+export interface IParamGetOnePostPayload {
+  id: number;
+}
+export interface IParamGetPostsByCategoryPayload {
+  id_category: number;
+}
+
 export const getPostService = async () => {
   const response = await fetch(`${API_URL}/posts`, {
     method: "GET",
@@ -18,6 +25,40 @@ export const getPostService = async () => {
 
   if (!response.ok) {
     throw new Error("Failed to fetch posts");
+  }
+
+  return response.json();
+};
+
+export const getOnePostsByCategoryService = async ({
+  id_category,
+}: IParamGetPostsByCategoryPayload) => {
+  const response = await fetch(`${API_URL}/posts/category/${id_category}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch posts by categoryId ${id_category}`);
+  }
+
+  return response.json();
+};
+
+export const getOnePostService = async ({ id }: IParamGetOnePostPayload) => {
+  const response = await fetch(`${API_URL}/posts/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch post details");
   }
 
   return response.json();

@@ -3,8 +3,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface Post {
   id: number;
   title: string;
-  image: string;
   content: string;
+  image?: string;
+  description?: string;
 }
 
 interface FavoritesState {

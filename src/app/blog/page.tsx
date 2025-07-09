@@ -1,35 +1,16 @@
 "use client";
 
 import { addFavorite, Post } from "@/redux/favoriteSlice";
+import { getCategoriesService } from "@/services/category.service";
 import { getPostService } from "@/services/post.service";
-import Image from "next/image";
 import { useLayoutEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-
-const dummyPosts = [
-  {
-    id: 1,
-    title: "First Post",
-    content: "This is the first post.",
-    image: "post1.png",
-  },
-  {
-    id: 2,
-    title: "Second Post",
-    content: "This is the second post.",
-    image: "post2.png",
-  },
-  {
-    id: 2,
-    title: "Second Post",
-    content: "This is the third post.",
-    image: "post3.png",
-  },
-];
-
+import { ICategory, IPost } from "./blog.types";
+import CategoriesList from "@/components/blog/category/CategoriesList";
+import PostList from "@/components/blog/post/PostList";
 export default function BlogPage() {
-  const [posts] = useState<Post[]>(dummyPosts);
-  const [postData, setPostsList] = useState<Post[]>([]);
+  const [postData, setPostsList] = useState<IPost[]>([]);
+  const [categoriesList, setCategoriesList] = useState<ICategory[]>([]);
 
   const dispatch = useDispatch();
 
@@ -38,33 +19,28 @@ export default function BlogPage() {
   };
 
   useLayoutEffect(() => {
-    async function fetchPostsData() {
-      const dataResult = await getPostService();
-      console.log("dataResult :", dataResult);
-      setPostsList(dataResult);
-    }
-    fetchPostsData();
     // fetch posts
+    async function fetchPostsData() {
+      const postsResult = await getPostService();
+      setPostsList(postsResult);
+    }
+    async function fetchCategoriesData() {
+      const categoriesResult = await getCategoriesService();
+      setCategoriesList(categoriesResult);
+    }
+
+    fetchPostsData();
+    fetchCategoriesData();
   }, []);
 
   return (
     <div>
-      <h1>Blog Posts</h1>
-      {posts.map((post) => (
-        <div
-          key={post.id}
-          style={{ border: "1px solid #ccc", padding: 10, marginBottom: 10 }}
-        >
-          <h3>{post.title}</h3>
-          <p>{post.content}</p>
-          <Image
-            alt="post_img"
-            width={150}
-            height={150}
-            src={`/images/posts/${post.image}`}
-          />
-          <button onClick={() => handleFavorite(post)}>Add to Favorites</button>
-        </div>
+      {categoriesList.map((categ) => (
+        <CategoriesList category={categ} />
+      ))}
+
+      {postData.map((post) => (
+        <PostList postItem={post} handleFavorite={handleFavorite} />
       ))}
     </div>
   );
