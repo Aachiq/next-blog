@@ -1,3 +1,4 @@
+import { IPost } from "@/app/blog/blog.types";
 import { API_URL } from "@/config/constants";
 
 export interface ICreatePostPayload {

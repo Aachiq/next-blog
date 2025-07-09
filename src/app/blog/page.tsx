@@ -2,7 +2,10 @@
 
 import { addFavorite, Post } from "@/redux/favoriteSlice";
 import { getCategoriesService } from "@/services/category.service";
-import { getPostService } from "@/services/post.service";
+import {
+  getOnePostsByCategoryService,
+  getPostService,
+} from "@/services/post.service";
 import { useLayoutEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ICategory, IPost } from "./blog.types";
@@ -33,10 +36,22 @@ export default function BlogPage() {
     fetchCategoriesData();
   }, []);
 
+  // filter by category
+  const filterPostsByCategory = async (idCatgeory: number) => {
+    // call service
+    const resultPostsByCategory = await getOnePostsByCategoryService({
+      id_category: idCatgeory,
+    });
+    setPostsList(resultPostsByCategory);
+  };
+
   return (
     <div>
       {categoriesList.map((categ) => (
-        <CategoriesList category={categ} />
+        <CategoriesList
+          category={categ}
+          filterPostsByCategory={filterPostsByCategory}
+        />
       ))}
 
       {postData.map((post) => (
