@@ -1,8 +1,9 @@
 "use client";
 
 import { addFavorite, Post } from "@/redux/favoriteSlice";
+import { getPostService } from "@/services/post.service";
 import Image from "next/image";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const dummyPosts = [
@@ -28,11 +29,23 @@ const dummyPosts = [
 
 export default function BlogPage() {
   const [posts] = useState<Post[]>(dummyPosts);
+  const [postData, setPostsList] = useState<Post[]>([]);
+
   const dispatch = useDispatch();
 
   const handleFavorite = (post: Post) => {
     dispatch(addFavorite(post));
   };
+
+  useLayoutEffect(() => {
+    async function fetchPostsData() {
+      const dataResult = await getPostService();
+      console.log("dataResult :", dataResult);
+      setPostsList(dataResult);
+    }
+    fetchPostsData();
+    // fetch posts
+  }, []);
 
   return (
     <div>
