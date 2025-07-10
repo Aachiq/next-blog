@@ -12,13 +12,12 @@ export default function CategoriesList({
   return (
     <div
       key={category.id}
-      style={{
-        border: "1px solid #ccc",
-        padding: 5,
-        display: "flex",
-        alignItems: "center",
-      }}
       onClick={() => filterPostsByCategory(category.id)}
+      style={{
+        padding: 5,
+        border: "1px solid #ccc",
+        cursor: "pointer",
+      }}
     >
       <h3>{category.name}</h3>
     </div>

@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { ICategory, IPost } from "./blog.types";
 import CategoriesList from "@/components/blog/category/CategoriesList";
 import PostList from "@/components/blog/post/PostList";
+import CreatePost from "@/components/blog/post/CreatePost";
 export default function BlogPage() {
   const [postData, setPostsList] = useState<IPost[]>([]);
   const [categoriesList, setCategoriesList] = useState<ICategory[]>([]);
@@ -47,12 +48,21 @@ export default function BlogPage() {
 
   return (
     <div>
-      {categoriesList.map((categ) => (
-        <CategoriesList
-          category={categ}
-          filterPostsByCategory={filterPostsByCategory}
-        />
-      ))}
+      <CreatePost />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
+        {categoriesList.map((categ) => (
+          <CategoriesList
+            category={categ}
+            filterPostsByCategory={filterPostsByCategory}
+          />
+        ))}
+      </div>
 
       {postData.map((post) => (
         <PostList postItem={post} handleFavorite={handleFavorite} />
